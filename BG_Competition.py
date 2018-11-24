@@ -3,12 +3,13 @@
 """
 Backgammon interface
 Run this program to play a game of Backgammon
-The agent is stored in another file 
+The agent is stored in another file
 Most (if not all) of your agent-develeping code should be written in the agent.py file
-Feel free to change this file as you wish but you will only submit your agent 
+Feel free to change this file as you wish but you will only submit your agent
 so make sure your changes here won't affect his performance.
 """
-import agentX #, agentA, agentB, agentC, agentD, agentE, agentF, agentG ...
+import pub_stomper_agent as PubStomper #, agentA, agentB, agentC, agentD, agentE, agentF, agentG ...
+import pub_stomper_flipped_agent as PubStomper_flipped #, agentA, agentB, agentC, agentD, agentE, agentF, agentG ...
 import numpy as np
 import time
 
@@ -31,27 +32,27 @@ def roll_dice():
     return dice
 
 def game_over(board):
-    # returns True if the game is over    
+    # returns True if the game is over
     return board[27]==15 or board[28]==-15
 
 def check_for_error(board):
     # checks for obvious errors
     errorInProgram = False
-    
+
     if (sum(board[board>0]) != 15 or sum(board[board<0]) != -15):
         # too many or too few pieces on board
         errorInProgram = True
         print("Too many or too few pieces on board!")
     return errorInProgram
-    
+
 def pretty_print(board):
     string = str(np.array2string(board[1:13])+'\n'+
                  np.array2string(board[24:12:-1])+'\n'+
                  np.array2string(board[25:29]))
     print("board: \n", string)
-    
-            
-        
+
+
+
 def legal_move(board, die, player):
     # finds legal moves for a board and one dice
     # inputs are some BG-board, the number on the die and which player is up
@@ -59,26 +60,26 @@ def legal_move(board, die, player):
     possible_moves = []
 
     if player == 1:
-        
+
         # dead piece, needs to be brought back to life
-        if board[25] > 0: 
+        if board[25] > 0:
             start_pip = 25-die
             if board[start_pip] > -2:
                 possible_moves.append(np.array([25,start_pip]))
-                
-        # no dead pieces        
+
+        # no dead pieces
         else:
             # adding options if player is bearing off
-            if sum(board[7:25]>0) == 0: 
+            if sum(board[7:25]>0) == 0:
                 if (board[die] > 0):
                     possible_moves.append(np.array([die,27]))
-                    
+
                 elif not game_over(board): # smá fix
                     # everybody's past the dice throw?
                     s = np.max(np.where(board[1:7]>0)[0]+1)
                     if s<die:
                         possible_moves.append(np.array([s,27]))
-                    
+
             possible_start_pips = np.where(board[0:25]>0)[0]
 
             # finding all other legal options
@@ -87,18 +88,18 @@ def legal_move(board, die, player):
                 if end_pip > 0:
                     if board[end_pip] > -2:
                         possible_moves.append(np.array([s,end_pip]))
-                        
+
     elif player == -1:
         # dead piece, needs to be brought back to life
-        if board[26] < 0: 
+        if board[26] < 0:
             start_pip = die
             if board[start_pip] < 2:
                 possible_moves.append(np.array([26,start_pip]))
-                
-        # no dead pieces       
+
+        # no dead pieces
         else:
             # adding options if player is bearing off
-            if sum(board[1:19]<0) == 0: 
+            if sum(board[1:19]<0) == 0:
                 if (board[25-die] < 0):
                     possible_moves.append(np.array([25-die,28]))
                 elif not game_over(board): # smá fix
@@ -114,7 +115,7 @@ def legal_move(board, die, player):
                 if end_pip < 25:
                     if board[end_pip] < 2:
                         possible_moves.append(np.array([s,end_pip]))
-        
+
     return possible_moves
 
 def legal_moves(board, dice, player):
@@ -133,7 +134,7 @@ def legal_moves(board, dice, player):
         for m2 in possible_second_moves:
             moves.append(np.array([m1,m2]))
             boards.append(update_board(temp_board,m2,player))
-        
+
     if dice[0] != dice[1]:
         # try using the second dice, then the first one
         possible_first_moves = legal_move(board, dice[1], player)
@@ -143,23 +144,23 @@ def legal_moves(board, dice, player):
             for m2 in possible_second_moves:
                 moves.append(np.array([m1,m2]))
                 boards.append(update_board(temp_board,m2,player))
-            
+
     # if there's no pair of moves available, allow one move:
-    if len(moves)==0: 
+    if len(moves)==0:
         # first dice:
         possible_first_moves = legal_move(board, dice[0], player)
         for m in possible_first_moves:
             moves.append(np.array([m]))
             boards.append(update_board(temp_board,m,player))
-            
+
         # second dice:
         if dice[0] != dice[1]:
             possible_first_moves = legal_move(board, dice[1], player)
             for m in possible_first_moves:
                 moves.append(np.array([m]))
                 boards.append(update_board(temp_board,m,player))
-            
-    return moves, boards 
+
+    return moves, boards
 
 def update_board(board, move, player):
     # updates the board
@@ -171,19 +172,19 @@ def update_board(board, move, player):
     if len(move) > 0:
         startPip = move[0]
         endPip = move[1]
-        
+
         # moving the dead piece if the move kills a piece
         kill = board_to_update[endPip]==(-1*player)
         if kill:
             board_to_update[endPip] = 0
             jail = 25+(player==1)
             board_to_update[jail] = board_to_update[jail] - player
-        
+
         board_to_update[startPip] = board_to_update[startPip]-1*player
         board_to_update[endPip] = board_to_update[endPip]+player
 
     return board_to_update
-    
+
 
 def is_legal_move(move,board_copy,dice,player,i):
     if len(move)==0: return True
@@ -194,49 +195,49 @@ def is_legal_move(move,board_copy,dice,player,i):
         print("Game forfeited. Player "+str(player)+" made an illegal move")
         return False
     return True
-    
+
 def play_a_game(commentary = False):
     board = init_board() # initialize the board
     player = np.random.randint(2)*2-1 # which player begins?
-    
+
     # play on
     while not game_over(board) and not check_for_error(board):
         if commentary: print("lets go player ",player)
-        
+
         # roll dice
         dice = roll_dice()
         if commentary: print("rolled dices:", dice)
-            
+
         # make a move (2 moves if the same number appears on the dice)
         for i in range(1+int(dice[0] == dice[1])):
             global move
             board_copy = np.copy(board)
-            
+
             if player == 1:
-                move = agentX.action(board_copy,dice,player,i) 
+                move = PubStomper.action(board_copy,dice,player,i)
             elif player == -1:
-                move = agentX.action(board_copy,dice,player,i) 
-            
+                move = PubStomper_flipped.action(board_copy,dice,player,i)
+
             # check if the move is legit, break the for loop if not
             legit_move = is_legal_move(move,board_copy,dice,player,i)
             if not legit_move: break
-        
+
             # update the board
             if len(move) != 0:
                 for m in move:
                     board = update_board(board, m, player)
-                                
-            # give status after every move:         
-            if commentary: 
+
+            # give status after every move:
+            if commentary:
                 print("move from player",player,":")
                 pretty_print(board)
-                
+
         # if the move was not legit, break the while loop, forfeiting the point
         if not legit_move: break
-    
-        # players take turns 
+
+        # players take turns
         player = -player
-            
+
     # return the winner
     return -1*player
 
@@ -247,6 +248,7 @@ def main():
     for g in range(nGames):
         winner = play_a_game(commentary=False)
         winners[str(winner)] += 1
+        print(winners)
     print("Out of", nGames, "games,")
     print("player", 1, "won", winners["1"],"times and")
     print("player", -1, "won", winners["-1"],"times")
@@ -254,9 +256,6 @@ def main():
     print("runTime:", runTime)
     print("average time:", np.mean(runTime/nGames), "sec/game")
 
-    
+
 if __name__ == '__main__':
     main()
-    
-    
-

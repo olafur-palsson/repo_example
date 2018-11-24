@@ -1,0 +1,16 @@
+{
+    "competitors": [
+        {
+            "cfg": "nn_pg",
+            "brain": "best"
+        },
+        {
+            "cfg": "nn_pg",
+            "brain": "best"
+        },
+        {
+            "cfg": "nn_pg",
+            "brain": "new"
+        }
+    ]
+}
