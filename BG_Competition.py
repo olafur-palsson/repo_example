@@ -214,7 +214,7 @@ def play_a_game(commentary = False):
             board_copy = np.copy(board)
 
             if player == 1:
-                move = PubStomper.action(board_copy,dice,player,i)
+                move = PubStomper_flipped.action(board_copy,dice,player,i)
             elif player == -1:
                 move = PubStomper_flipped.action(board_copy,dice,player,i)
 
