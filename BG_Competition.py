@@ -12,6 +12,7 @@ import random_agent as RandomAgent #, agentA, agentB, agentC, agentD, agentE, ag
 import pub_stomper_flipped_agent as PubStomper_flipped #, agentA, agentB, agentC, agentD, agentE, agentF, agentG ...
 import numpy as np
 import time
+import agentX
 
 def init_board():
     # initializes the game board
@@ -216,7 +217,7 @@ def play_a_game(commentary = False):
             if player == 1:
                 move = PubStomper_flipped.action(board_copy,dice,player,i)
             elif player == -1:
-                move = RandomAgent.action(board_copy,dice,player,i)
+                move = agentX.action(board_copy,dice,player,i)
 
             # check if the move is legit, break the for loop if not
             legit_move = is_legal_move(move,board_copy,dice,player,i)
