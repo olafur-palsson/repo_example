@@ -8,7 +8,7 @@ Most (if not all) of your agent-develeping code should be written in the agent.p
 Feel free to change this file as you wish but you will only submit your agent
 so make sure your changes here won't affect his performance.
 """
-import pub_stomper_agent as PubStomper #, agentA, agentB, agentC, agentD, agentE, agentF, agentG ...
+import random_agent as RandomAgent #, agentA, agentB, agentC, agentD, agentE, agentF, agentG ...
 import pub_stomper_flipped_agent as PubStomper_flipped #, agentA, agentB, agentC, agentD, agentE, agentF, agentG ...
 import numpy as np
 import time
@@ -216,7 +216,7 @@ def play_a_game(commentary = False):
             if player == 1:
                 move = PubStomper_flipped.action(board_copy,dice,player,i)
             elif player == -1:
-                move = PubStomper_flipped.action(board_copy,dice,player,i)
+                move = RandomAgent.action(board_copy,dice,player,i)
 
             # check if the move is legit, break the for loop if not
             legit_move = is_legal_move(move,board_copy,dice,player,i)
