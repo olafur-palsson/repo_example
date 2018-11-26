@@ -8,7 +8,7 @@ import BG_Competition
 
 from pub_stomper_agents.agent import get_agent_by_config_name
 
-PubStomper = get_agent_by_config_name('nn_pg', 'best')
+PubStomper = get_agent_by_config_name('nn_pg_2', 'best')
 
 def flip_board(board_copy):
     #flips the game board and returns a new copy
