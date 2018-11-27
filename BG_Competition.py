@@ -8,9 +8,7 @@ Most (if not all) of your agent-develeping code should be written in the agent.p
 Feel free to change this file as you wish but you will only submit your agent
 so make sure your changes here won't affect his performance.
 """
-import random_agent as RandomAgent #, agentA, agentB, agentC, agentD, agentE, agentF, agentG ...
 import pub_stomper_flipped_agent as PubStomper_flipped #, agentA, agentB, agentC, agentD, agentE, agentF, agentG ...
-import random_agent as RandomAgent #, agentA, agentB, agentC, agentD, agentE, agentF, agentG ...
 import numpy as np
 import time
 import agentX
