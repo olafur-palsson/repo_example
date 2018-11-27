@@ -5,7 +5,10 @@ an example of an intelligent agent who flips the board
 """
 import numpy as np
 import BG_Competition
-import random
+
+from pub_stomper_agents.agent import get_agent_by_config_name
+
+PubStomper = get_agent_by_config_name('random', 'None')
 
 def flip_board(board_copy):
     #flips the game board and returns a new copy
@@ -45,7 +48,7 @@ def action(board_copy,dice,player,i):
     #
     #
     #
-    move = random.choice(possible_moves)
+    move = PubStomper.pub_stomper_policy(possible_moves, possible_boards, dice)
 
     # if the table was flipped the move has to be flipped as well
     if player == -1: move = flip_move(move)
