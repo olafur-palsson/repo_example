@@ -55,7 +55,6 @@ class PolicyPGNetwork(pub_stomper_policy):
             layst_layer_outputs = last_layer_outputs.append(value_of_board)
         return last_layer_outputs
 
-
     def evaluate(self, possible_boards):
 
         # possible_boards -> neural network -> sigmoid -> last_layer_sigmoid
@@ -71,9 +70,11 @@ class PolicyPGNetwork(pub_stomper_policy):
         self.saved_log_probabilities.append(distribution.log_prob(move))
 
         _, move = move.max(0)
+
         # calculate the value estimation and save for backward
         value_estimate = self.pg_plugin.value_function(last_layer_outputs[move])
         self.saved_value_estimations.append(value_estimate)
+        move = self.argmax(probs)
         return move
 
     def save(self, save_as_best=False):
